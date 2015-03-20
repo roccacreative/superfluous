@@ -10,5 +10,34 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Superfluous.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\MenuPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\OptionItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\InboxPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Color.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\RootPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\SuperfluousDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\EmailService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\SendPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\EmailPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\SessionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Session.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\UsernamePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\MailboxPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\StartupPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\UsernameViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Username.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\CustomWebView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\SettingsPage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Pages\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Models\" />
+    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Views\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Helpers\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Services\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Data\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Renderers\" />
   </ItemGroup>
 </Project>
