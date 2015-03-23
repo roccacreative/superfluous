@@ -2,16 +2,16 @@
 using Xamarin.Forms;
 using Superfluous.Services;
 using System.Threading.Tasks;
+using Superfluous.ViewModels;
 
 namespace Superfluous.Pages
 {
 	public class StartupPage : ContentPage
 	{
-		private readonly ISessionService _sessionService;
-
-		public StartupPage ()
+		public StartupPage (StartupViewModel viewModel)
 		{
-			_sessionService = TinyIoC.TinyIoCContainer.Current.Resolve<ISessionService> ();
+			viewModel.Navigation = Navigation;
+			BindingContext = viewModel;
 
 			BackgroundColor = Helpers.Color.Blue.ToFormsColor();
 
@@ -23,7 +23,7 @@ namespace Superfluous.Pages
 			var label = new Label
 			{
 				Text = "Initializing Session",
-				FontSize =  25,
+				FontSize =  20,
 				TextColor = Color.White,
 				XAlign = TextAlignment.Center, // Center the text in the blue box.
 			};
@@ -40,20 +40,7 @@ namespace Superfluous.Pages
 			Content = new ScrollView { Content = layout };
 
 			Task.Run (async () => {
-				await Start ();
-			});
-		}
-
-		private Task Start()
-		{
-			return Task.Run (async () => {
-				await _sessionService.Init();
-
-				Device.BeginInvokeOnMainThread(async ()=> {
-					// replace route page once loaded
-					var np = new NavigationPage (new RootPage ()) { Title = "Navigation Stack" };
-					App.Current.MainPage = np;
-				});
+				await viewModel.Start();
 			});
 		}
 	}

@@ -2,24 +2,27 @@
 using Xamarin.Forms;
 using Superfluous.Pages;
 using System.Linq;
+using Superfluous.ViewModels;
 
 namespace Superfluous
 {
 	public class RootPage : MasterDetailPage
 	{
-		public RootPage ()
+		public RootPage (RootViewModel viewModel)
 		{
+			viewModel.Navigation = Navigation;
+			BindingContext = viewModel;
+
+			var page = TinyIoC.TinyIoCContainer.Current.Resolve<MenuPage> ();
+
 			NavigationPage.SetHasNavigationBar(this, false);
 
-			var optionsPage = new MenuPage { Icon = "menu.png", Title = "menu" };
+			Master = page;
 
-			optionsPage.Menu.ItemSelected += (sender, e) => SetEmail(e.SelectedItem as OptionItem);
-
-			Master = optionsPage;
-
+			this.SetBinding<RootViewModel> (MasterDetailPage.IsPresentedProperty, m => m.IsPresented, BindingMode.TwoWay);
+				
+			// no binding to set detail
 			NavigateTo(new MailboxPage());
-
-			//ShowLoginDialog();
 		}
 
 		void NavigateTo(Page page)
@@ -29,17 +32,10 @@ namespace Superfluous
 			#endif
 			Detail = new NavigationPage(page)
 			{
-				Tint = Helpers.Color.Blue.ToFormsColor(),
+				BackgroundColor = Helpers.Color.Blue.ToFormsColor(),
 			};
-
 
 			IsPresented = false;
 		}
-
-		void SetEmail(OptionItem item)
-		{
-			
-		}
 	}
 }
-

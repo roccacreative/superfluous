@@ -7,16 +7,13 @@ namespace Superfluous.Pages
 	{
 		public MailboxPage()
 		{
-			try {
-				var inbox = TinyIoC.TinyIoCContainer.Current.Resolve<InboxPage> ();
+			var inbox = TinyIoC.TinyIoCContainer.Current.Resolve<InboxPage> ();
+			var settings = TinyIoC.TinyIoCContainer.Current.Resolve<SettingsPage> ();
+			var send = TinyIoC.TinyIoCContainer.Current.Resolve<SendPage> ();
 
-				this.Children.Add (inbox);
-				this.Children.Add (new SendPage () { Title = "Send", Icon = "send.png" });
-				this.Children.Add (new SettingsPage() { Title = "Settings", Icon = "settings.png" });
-
-			} catch (Exception ex) {
-					
-			}
+			this.Children.Add (inbox);
+			this.Children.Add (send);
+			this.Children.Add (settings);
 		}
 	}
 }

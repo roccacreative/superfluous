@@ -11,7 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Superfluous.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\MenuPage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\OptionItems.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\InboxPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Color.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\RootPage.cs" />
@@ -29,6 +28,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Username.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Renderers\CustomWebView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\SettingsPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EmailViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\InboxViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\StartupViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MenuViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\OptionItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SendViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderers\BorderlessEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\RootViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Pages\" />

@@ -2,15 +2,24 @@
 using Xamarin.Forms;
 using DisposableMail;
 using Superfluous.Renderers;
+using Superfluous.ViewModels;
 
 namespace Superfluous.Pages
 {
 	public class EmailPage : ContentPage
 	{
-		public EmailPage (Email email)
+		public EmailPage (EmailViewModel viewModel)
 		{
-			this.Title = email.MailSubject;
+			viewModel.Navigation = Navigation;
+			BindingContext = viewModel;
 
+			var fromLabel = new Label {
+				BackgroundColor = Color.White,
+				FontSize = 15
+			};
+
+			fromLabel.SetBinding<EmailViewModel> (Label.TextProperty, m => m.Email.MailFrom);
+			
 			var from = new StackLayout () {
 				Children = { 
 					new Label {
@@ -19,46 +28,53 @@ namespace Superfluous.Pages
 						FontSize = 15,
 						FontAttributes = FontAttributes.Bold,
 					},
-					new Label {
-						Text = email.MailFrom,
-						BackgroundColor = Color.White,
-						FontSize = 15
-					}
+					fromLabel
 				},
 				Orientation = StackOrientation.Horizontal,
 				Padding = new Thickness(10)
 			};
 
+			var subjectLabel = new Label {
+				BackgroundColor = Color.White,
+				FontSize = 18,
+				FontAttributes = FontAttributes.Bold,
+			};
+			subjectLabel.SetBinding<EmailViewModel> (Label.TextProperty, m => m.Email.MailSubject);
+
+			var dateLabel = new Label {
+				BackgroundColor = Color.White,
+				FontSize = 15,
+			};
+			dateLabel.SetBinding<EmailViewModel> (Label.TextProperty, m => m.Email.MailDate);
+
 			var subject = new StackLayout () {
 				Children = {
-					new Label {
-						Text = email.MailSubject,
-						BackgroundColor = Color.White,
-						FontSize = 18,
-						FontAttributes = FontAttributes.Bold
-					},
-					new Label {
-						Text = email.MailDate,
-						BackgroundColor = Color.White,
-						FontSize = 15,
-					}
+					subjectLabel,
+
 				},
 				Padding = new Thickness(10, 0)
 			};
 
 			var htmlSource = new HtmlWebViewSource ();
-			htmlSource.Html = email.MailBody;
+			htmlSource.SetBinding<EmailViewModel> (HtmlWebViewSource.HtmlProperty, m => m.Email.MailBody);
+
+			var webView = new CustomWebView () {
+				VerticalOptions = LayoutOptions.FillAndExpand,
+				HeightRequest = 300,
+				WidthRequest = 320,
+				Source = htmlSource
+			};
 
 			var body = new StackLayout () {
 				Children = {
-					new CustomWebView () {
-						VerticalOptions = LayoutOptions.FillAndExpand,
-						HeightRequest = 300,
-						WidthRequest = 320,
-						Source = htmlSource
-					}
+					webView
 				},
 				Padding = new Thickness(10, 0)
+			};
+
+			// need to pass the binding onto the html source
+			webView.BindingContextChanged += (sender, args) => {
+				htmlSource.BindingContext = webView.BindingContext;
 			};
 
 			Content = new ScrollView() {
@@ -69,6 +85,13 @@ namespace Superfluous.Pages
 					Children = { from, subject, body }
 				}
 			};
+		}
+
+		protected override void OnAppearing ()
+		{
+			base.OnAppearing ();
+
+			this.Title = (BindingContext as EmailViewModel).Email.MailSubject;
 		}
 	}
 }

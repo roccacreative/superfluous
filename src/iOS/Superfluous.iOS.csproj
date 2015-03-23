@@ -179,6 +179,7 @@
     <Compile Include="TinyIoC.cs" />
     <Compile Include="Data\SQLite_iOS.cs" />
     <Compile Include="Renderers\CustomWebViewRenderer.cs" />
+    <Compile Include="Renderers\BorderlessEntryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ITunesArtwork Include="ITunesArtwork" />

@@ -5,62 +5,41 @@ using DisposableMail;
 using Superfluous.Services;
 using Superfluous.Pages;
 using System.Threading.Tasks;
+using Superfluous.ViewModels;
 
 namespace Superfluous
 {
 	public class InboxPage : ContentPage
 	{	
-		private readonly ISessionService _sessionService;
-		private readonly IEmailService _emailService;
-
 		public static GuerrillaMail Mail = new GuerrillaMail();
-		public static Mail FirstMail;
+		public static Email FirstMail;
 
 		private ListView _listView;
 
-		public InboxPage (
-			ISessionService sessionService,
-			IEmailService emailService)
+		public InboxPage (InboxViewModel viewModel)
 		{
-			_emailService = emailService;
-			_sessionService = sessionService;
+			viewModel.Navigation = Navigation;
 
-			_emailService.UsernameChanged += (EmailUser user) => {
-				Device.BeginInvokeOnMainThread(() => {
-					var emails = _emailService.CheckEmail ();
-
-					if(emails.Count > 0)
-						_listView.ItemsSource = _emailService.Inbox.ToArray();
-				});
-			};
+			BindingContext = viewModel;
 
 			Title = "Inbox";
 			Icon = "mailbox.png";
-
-			var inbox = _emailService.CheckEmail ();
 
 			_listView = new ListView
 			{
 				RowHeight = 100
 			};
-
-			_listView.ItemsSource = inbox.ToArray ();
+					
 			_listView.IsPullToRefreshEnabled = true;
-			_listView.ItemTemplate = new DataTemplate(typeof(EmployeeCell));
-			_listView.ItemTapped += async (object sender, ItemTappedEventArgs e) => {
-				var selected = e.Item as Mail;
+			_listView.SetBinding<InboxViewModel> (ListView.ItemTemplateProperty, m => m.InboxTemplate);
+			_listView.SetBinding<InboxViewModel> (ListView.RefreshCommandProperty, m => m.RefreshCommand);
+			_listView.SetBinding<InboxViewModel> (ListView.SelectedItemProperty, m => m.SelectedItem);
+			_listView.SetBinding<InboxViewModel> (ListView.IsRefreshingProperty, m => m.IsBusy);
+			_listView.SetBinding<InboxViewModel> (ListView.ItemsSourceProperty, m => m.Inbox);
 
-				var email = _emailService.GetEmail(selected.MailID);
-
-				await Navigation.PushAsync(new EmailPage(email));
-			};
-			_listView.Refreshing += (object sender, EventArgs e) => {
-				var emails = _emailService.CheckEmail ();
-
-				if(emails.Count > 0)
-					_listView.ItemsSource = _emailService.Inbox.ToArray();
-				
-				_listView.IsRefreshing = false;
+			// no binding available
+			_listView.ItemTapped += (object sender, ItemTappedEventArgs e) => {
+				viewModel.ItemSelectedCommand.Execute(null);
 			};
 
 			Content = new StackLayout
@@ -71,6 +50,7 @@ namespace Superfluous
 			//Device.StartTimer (new TimeSpan (0, 0, 30), UpdateInbox);
 		}
 	}
+
 
 	class EmployeeCell : ViewCell
 	{
@@ -101,7 +81,7 @@ namespace Superfluous
 				FontSize = 15,
 				FontAttributes = FontAttributes.Bold
 			};
-			subjectLabel.SetBinding<Mail>(Label.TextProperty, m => m.MailSubject);
+			subjectLabel.SetBinding<Email>(Label.TextProperty, m => m.MailSubject);
 
 			var fromLabel = new Label
 			{
@@ -109,7 +89,7 @@ namespace Superfluous
 				FontSize = 12
 			};
 
-			fromLabel.SetBinding<Mail>(Label.TextProperty, m => m.MailFrom);
+			fromLabel.SetBinding<Email>(Label.TextProperty, m => m.MailFrom);
 
 			var excerptLabel = new Label {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
@@ -118,7 +98,7 @@ namespace Superfluous
 				LineBreakMode = LineBreakMode.WordWrap,
 				HeightRequest = 45
 			};
-			excerptLabel.SetBinding<Mail> (Label.TextProperty, m => m.MailExcerpt);
+			excerptLabel.SetBinding<Email> (Label.TextProperty, m => m.MailExcerpt);
 
 			var nameLayout = new StackLayout()
 			{

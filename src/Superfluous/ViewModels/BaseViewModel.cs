@@ -2,11 +2,22 @@
 using System.ComponentModel;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using Superfluous.Services;
+using TinyIoC;
 
 namespace Superfluous.ViewModels
 {
 	public abstract class BaseViewModel : INotifyPropertyChanged
 	{
+		public IEmailService EmailService { get; set; }
+
+		public ISessionService SessionService { get; set; }
+
+		public BaseViewModel()
+		{
+			TinyIoCContainer.Current.BuildUp (this, ResolveOptions.FailUnregisteredAndNameNotFound);
+		}
+
 		//private bool isChanged;
 		//public bool IsChanged
 		//{

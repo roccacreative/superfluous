@@ -8,9 +8,8 @@ namespace Superfluous.Pages
 {
 	public class UsernamePage : ContentPage
 	{
-		public UsernamePage ()
+		public UsernamePage (UsernameViewModel viewModel)
 		{
-			var viewModel = TinyIoCContainer.Current.Resolve<LoginViewModel> ();
 			viewModel.Navigation = Navigation;
 
 			BindingContext = viewModel;
@@ -21,7 +20,7 @@ namespace Superfluous.Pages
 
 			var label = new Label
 			{
-				Text = "Select domain and username",
+				Text = "Select new identity",
 				FontSize = 20,
 				FontAttributes = FontAttributes.None,
 				TextColor = Color.White,
@@ -32,15 +31,15 @@ namespace Superfluous.Pages
 			layout.Children.Add(label);
 
 			var username = new Entry { Placeholder = "Username", HeightRequest = 50 };
-			username.SetBinding(Entry.TextProperty, LoginViewModel.UsernamePropertyName);
+			username.SetBinding(Entry.TextProperty, UsernameViewModel.UsernamePropertyName);
 			layout.Children.Add(username);
 
-			var button = new Button { Text = "Confirm", TextColor = Color.Purple, BackgroundColor = Color.White, HeightRequest = 50 };
-			button.SetBinding(Button.CommandProperty, LoginViewModel.LoginCommandPropertyName);
+			var button = new Button { Text = "Confirm", TextColor = Color.White, BackgroundColor = Helpers.Color.Green.ToFormsColor(), HeightRequest = 50 };
+			button.SetBinding(Button.CommandProperty, UsernameViewModel.LoginCommandPropertyName);
 			layout.Children.Add(button);
 
 			var cancelButton = new Button { Text = "Cancel", TextColor = Color.Red, BackgroundColor = Color.White, HeightRequest = 40 };
-			cancelButton.SetBinding(Button.CommandProperty, LoginViewModel.LoginCommandPropertyName);
+			cancelButton.SetBinding(Button.CommandProperty, UsernameViewModel.CancelCommandPropertyName);
 			layout.Children.Add(cancelButton);
 
 			Content = new ScrollView { Content = layout };

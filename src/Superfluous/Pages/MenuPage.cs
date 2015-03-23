@@ -2,25 +2,22 @@
 using Xamarin.Forms;
 using System.Collections.Generic;
 using Superfluous.Services;
+using Superfluous.ViewModels;
 
 namespace Superfluous.Pages
 {
 	public class MenuPage : ContentPage
 	{
-		private readonly ISessionService _sessionService;
-
-		readonly List<OptionItem> OptionItems = new List<OptionItem>();
-
 		public ListView Menu { get; set; }
 
-		public MenuPage ()
+		public MenuPage (MenuViewModel viewModel)
 		{
-			_sessionService = TinyIoC.TinyIoCContainer.Current.Resolve<ISessionService> ();
+			viewModel.Navigation = Navigation;
+			BindingContext = viewModel;
 
-			foreach (var email in _sessionService.Current.Emails) {
-				OptionItems.Add (new OptionItem () { Title = email.Address });
-			}
-
+			Icon = "menu.png";
+			Title = "menu";
+				
 			BackgroundColor = Color.FromHex("333333");
 
 			var layout = new StackLayout { Spacing = 0, VerticalOptions = LayoutOptions.FillAndExpand };
@@ -29,7 +26,7 @@ namespace Superfluous.Pages
 				Padding = new Thickness(10, 36, 0, 5),
 				Content = new Xamarin.Forms.Label {
 					TextColor = Color.FromHex("AAAAAA"),
-					Text = "MENU", 
+					Text = "FAVOURITES", 
 				}
 			};
 
@@ -41,18 +38,13 @@ namespace Superfluous.Pages
 			layout.Children.Add(label);
 
 			Menu = new ListView {
-				ItemsSource = OptionItems,
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				BackgroundColor = Color.Transparent,
 			};
 
-			var cell = new DataTemplate(typeof(ImageCell));
-			cell.SetBinding(TextCell.TextProperty, "Title");
-			cell.SetBinding(TextCell.DetailProperty, "Count");
-			cell.SetBinding(ImageCell.ImageSourceProperty, "IconSource");
-			cell.SetValue(VisualElement.BackgroundColorProperty, Color.Transparent);
-
-			Menu.ItemTemplate = cell;
+			Menu.SetBinding<MenuViewModel> (ListView.ItemsSourceProperty, m => m.SavedEmails);
+			Menu.SetBinding<MenuViewModel> (ListView.SelectedItemProperty, m => m.SelectedItem);
+			Menu.SetBinding<MenuViewModel> (ListView.ItemTemplateProperty, m => m.SavedEmailsTemplate);
 
 			layout.Children.Add(Menu);
 

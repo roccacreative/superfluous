@@ -11,22 +11,9 @@ namespace Superfluous
 {
 	public class App : Application
 	{
-		private static ISessionService _sessionService;
-		public static ISessionService SessionService {
-			get { return _sessionService;}
-		}
-
-		private static IEmailService _emailService;
-		public static IEmailService EmailService {
-			get { return _emailService;}
-		}
-
 		public App ()
 		{
-			_sessionService = TinyIoC.TinyIoCContainer.Current.Resolve<ISessionService> ();
-			_emailService = TinyIoC.TinyIoCContainer.Current.Resolve<IEmailService> ();
-
-			var np = new StartupPage ();
+			var np = TinyIoC.TinyIoCContainer.Current.Resolve<StartupPage> ();
 
 			// The root page of your application
 			MainPage = np;

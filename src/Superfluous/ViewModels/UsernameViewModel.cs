@@ -7,13 +7,8 @@ using Superfluous.Services;
 
 namespace Superfluous.ViewModels
 {
-	public class LoginViewModel : BaseViewModel
+	public class UsernameViewModel : BaseViewModel
 	{
-		private readonly ISessionService _sessionService;
-		private readonly IEmailService _emailService;
-
-		private INavigation navigation;
-
 		public static string[] Domains = {
 			"guerrillamail.biz",
 			"guerrillamail.com",
@@ -22,14 +17,7 @@ namespace Superfluous.ViewModels
 			"guerrillamail.org",
 			"guerrillamailblock.com",
 		};
-
-		public LoginViewModel(
-			ISessionService sessionService,
-			IEmailService emailService)
-		{
-			_sessionService = sessionService;
-			_emailService = emailService;
-		}
+						
 		public const string UsernamePropertyName = "Username";
 		private string username = string.Empty;
 		public string Username
@@ -84,12 +72,8 @@ namespace Superfluous.ViewModels
 
 		protected async Task ExecuteLoginCommand()
 		{
-			try {
-				_emailService.SetEmail (username + "@");
-				await Navigation.PopModalAsync();
-			} catch (Exception ex) {
-				
-			}
+			EmailService.SetEmail (username);
+			await Navigation.PopModalAsync ();
 		}
 
 		protected async Task ExecuteCancelCommand()

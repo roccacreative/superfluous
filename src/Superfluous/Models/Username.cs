@@ -16,6 +16,11 @@ namespace Superfluous.Models
 		public string Address {get;set;}
 
 		public DateTime Created {get;set;}
+
+		public Username()
+		{
+			Created = DateTime.Now;
+		}
 	}
 }
 

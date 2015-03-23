@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Superfluous.Data;
 using SQLiteNetExtensions.Extensions;
 using SQLiteNetExtensionsAsync.Extensions;
+using Xamarin.Forms;
 
 namespace Superfluous.Services
 {
