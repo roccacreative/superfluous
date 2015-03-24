@@ -16,11 +16,16 @@ namespace Superfluous.ViewModels
 			return Task.Run (async () => {
 				await SessionService.Init();
 
-				Device.BeginInvokeOnMainThread(async ()=> {
-					// replace route page once loaded
-					var root = TinyIoC.TinyIoCContainer.Current.Resolve<RootPage>();
-					var np = new NavigationPage (root) { Title = "Navigation Stack" };
-					App.Current.MainPage = np;
+				Device.BeginInvokeOnMainThread(()=> {
+					try {
+						// replace route page once loaded
+						var root = TinyIoC.TinyIoCContainer.Current.Resolve<RootPage>();
+						var np =  root;
+
+						App.Current.MainPage = np;	
+					} catch (Exception ex) {
+						
+					}
 				});
 			});
 		}

@@ -14,7 +14,6 @@ namespace Superfluous.Pages
 			BindingContext = viewModel;
 
 			var fromLabel = new Label {
-				BackgroundColor = Color.White,
 				FontSize = 15
 			};
 
@@ -24,7 +23,6 @@ namespace Superfluous.Pages
 				Children = { 
 					new Label {
 						Text = "From: ",
-						BackgroundColor = Color.White,
 						FontSize = 15,
 						FontAttributes = FontAttributes.Bold,
 					},
@@ -35,7 +33,6 @@ namespace Superfluous.Pages
 			};
 
 			var subjectLabel = new Label {
-				BackgroundColor = Color.White,
 				FontSize = 18,
 				FontAttributes = FontAttributes.Bold,
 			};
@@ -60,8 +57,6 @@ namespace Superfluous.Pages
 
 			var webView = new CustomWebView () {
 				VerticalOptions = LayoutOptions.FillAndExpand,
-				HeightRequest = 300,
-				WidthRequest = 320,
 				Source = htmlSource
 			};
 
@@ -69,6 +64,7 @@ namespace Superfluous.Pages
 				Children = {
 					webView
 				},
+				VerticalOptions = LayoutOptions.FillAndExpand,
 				Padding = new Thickness(10, 0)
 			};
 

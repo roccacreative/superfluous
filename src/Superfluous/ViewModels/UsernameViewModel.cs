@@ -72,8 +72,11 @@ namespace Superfluous.ViewModels
 
 		protected async Task ExecuteLoginCommand()
 		{
-			EmailService.SetEmail (username);
 			await Navigation.PopModalAsync ();
+
+			await Task.Run(() => {
+				EmailService.SetEmail (username);
+			});
 		}
 
 		protected async Task ExecuteCancelCommand()

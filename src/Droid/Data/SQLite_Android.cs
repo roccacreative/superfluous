@@ -11,9 +11,9 @@ namespace Superfluous.Droid.Data
 		public SQLite.Net.Async.SQLiteAsyncConnection GetConnection ()
 		{
 			var sqliteFilename = "TodoSQLite.db3";
-			string documentsPath = Environment.GetFolderPath (Environment.SpecialFolder.Personal); // Documents folder
-			string libraryPath = Path.Combine (documentsPath, "..", "Library"); // Library folder
-			var path = Path.Combine(libraryPath, sqliteFilename);
+			string documentsPath = System.Environment.GetFolderPath (System.Environment.SpecialFolder.Personal); // Documents folder
+			var path = Path.Combine(documentsPath, sqliteFilename);
+
 			// Create the connection
 			var platform = new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid();
 

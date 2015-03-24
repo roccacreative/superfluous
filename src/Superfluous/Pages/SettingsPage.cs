@@ -16,7 +16,13 @@ namespace Superfluous.Pages
 			viewModel.Navigation = Navigation;
 			BindingContext = viewModel;
 
-			BackgroundColor = Helpers.Color.Purple.ToFormsColor();
+			Device.OnPlatform (
+				() => {
+					BackgroundColor = Helpers.Color.Purple.ToFormsColor ();
+				},
+				() => {
+				});
+
 			Icon = "settings.png";
 			Title = "Settings";
 
@@ -36,8 +42,7 @@ namespace Superfluous.Pages
 				XAlign = TextAlignment.Center,
 			};
 
-			var details = new StackLayout
-			{
+			var details = new StackLayout {
 				Children = {
 					_nameLabel,
 					_domainLabel
@@ -45,18 +50,28 @@ namespace Superfluous.Pages
 				VerticalOptions = LayoutOptions.CenterAndExpand
 			};
 				
-			layout.Children.Add(details);
+			layout.Children.Add (details);
 
-			var button = new Button { Text = "Change Address", TextColor = Color.Purple, BackgroundColor = Color.White };
+			var button = new Button { Text = "Change Address" };
 			button.SetBinding<SettingsViewModel> (Button.CommandProperty, m => m.ChangeAddressCommand);
+
+			Device.OnPlatform (
+				() => {
+					button.BackgroundColor = Color.White;
+					button.TextColor = Helpers.Color.Purple.ToFormsColor ();
+				},
+				() => {
+					button.BackgroundColor = Helpers.Color.Blue.ToFormsColor ();
+					button.TextColor = Color.White;
+				});
 
 			var saveButton = new Button { TextColor = Color.White };
 			saveButton.SetBinding<SettingsViewModel> (Button.BackgroundColorProperty, m => m.SaveBackgroundColor);
 			saveButton.SetBinding<SettingsViewModel> (Button.TextProperty, m => m.SaveText);
 			saveButton.SetBinding<SettingsViewModel> (Button.CommandProperty, m => m.SaveAddressCommand);
 
-			layout.Children.Add(button);
-			layout.Children.Add(saveButton);
+			layout.Children.Add (button);
+			layout.Children.Add (saveButton);
 
 			Content = new ScrollView { Content = layout };
 		}

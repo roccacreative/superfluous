@@ -96,6 +96,8 @@ namespace Superfluous.ViewModels
 
 				if (emails.Count > 0) {
 					Inbox = EmailService.Inbox;
+
+					InboxTemplate = new DataTemplate (typeof(EmployeeCell));
 				}
 			} catch (Exception ex) {
 				throw ex;

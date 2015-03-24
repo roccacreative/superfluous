@@ -14,7 +14,13 @@ namespace Superfluous.Pages
 
 			BindingContext = viewModel;
 
-			BackgroundColor = Helpers.Color.DarkBlue.ToFormsColor();
+			Device.OnPlatform (
+				() => {
+					BackgroundColor = Helpers.Color.DarkBlue.ToFormsColor();
+				},
+				() => {
+				});
+			
 
 			var layout = new StackLayout { Padding = 10 };
 
@@ -34,9 +40,17 @@ namespace Superfluous.Pages
 			username.SetBinding(Entry.TextProperty, UsernameViewModel.UsernamePropertyName);
 			layout.Children.Add(username);
 
-			var button = new Button { Text = "Confirm", TextColor = Color.White, BackgroundColor = Helpers.Color.Green.ToFormsColor(), HeightRequest = 50 };
+			var button = new Button { Text = "Confirm", TextColor = Color.White, HeightRequest = 50 };
 			button.SetBinding(Button.CommandProperty, UsernameViewModel.LoginCommandPropertyName);
 			layout.Children.Add(button);
+
+			Device.OnPlatform (
+				() => {
+					button.BackgroundColor = Helpers.Color.Green.ToFormsColor();
+				},
+				() => {
+					button.BackgroundColor = Helpers.Color.Blue.ToFormsColor();
+				});
 
 			var cancelButton = new Button { Text = "Cancel", TextColor = Color.Red, BackgroundColor = Color.White, HeightRequest = 40 };
 			cancelButton.SetBinding(Button.CommandProperty, UsernameViewModel.CancelCommandPropertyName);

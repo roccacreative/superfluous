@@ -65,7 +65,10 @@ namespace Superfluous.Services
 		public List<Email> CheckEmail()
 		{
 			var emails = _mailbox.CheckEmail ().MailList;
-			Inbox.AddRange (emails);
+
+			if (emails.Count > 0)
+				Inbox = emails;
+			
 			return emails;
 		}
 
@@ -118,17 +121,6 @@ namespace Superfluous.Services
 
 				if(UsernameForgotten != null) {
 					UsernameForgotten(username);
-				}
-
-				var address = _mailbox.GetEmailAddress ();
-
-				if (UsernameChanged != null) {
-					UsernameChanged (new EmailUser() { 
-						EmailAddress = address.Address,
-						Alias = address.Alias,
-						Timestamp = address.Timestamp,
-						SessionID = address.SessionID
-					});
 				}
 			});
 		}
